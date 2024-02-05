@@ -1,0 +1,9 @@
+server:
+  port: 9009
+spring:
+  application:
+    name: initial-project # 定义当前服务名称
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 47.106.146.101:8848 # 指定正在运行的Nacos服务器的位置

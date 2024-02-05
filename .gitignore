@@ -1,0 +1,23 @@
+# for eclipse
+.settings/
+
+
+.project
+*/.project
+.classpath
+*/.classpath
+target/
+*.jar
+logs/
+log/
+.factorypath
+*.iml
+*/*.iml
+/.idea
+sas/
+*/target
+*/*/target
+/.idea/
+/.idea/libraries/*
+/.idea/
+/log/
