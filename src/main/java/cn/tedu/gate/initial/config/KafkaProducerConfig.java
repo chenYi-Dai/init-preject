@@ -1,3 +1,4 @@
+/*
 package cn.tedu.gate.initial.config;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -24,3 +25,4 @@ public class KafkaProducerConfig {
     @Value("${spring.kafka.producer.linger}")
     private Integer linger;
 }
+*/

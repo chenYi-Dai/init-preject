@@ -1,3 +1,4 @@
+/*
 package cn.tedu.gate.initial.task;
 
 import com.alibaba.fastjson.JSONObject;
@@ -38,10 +39,13 @@ public class ConsumersKafkaMessage {
         }
     }
 
- /*   @Scheduled(cron = "0/5 * * * * ? ")
+ */
+/*   @Scheduled(cron = "0/5 * * * * ? ")
     public void receiveKafkaMessage(String str,Consumer consumer){
         JSONObject jsonObject =  new JSONObject();
         log.info("receiveKafkaMessage value | {}",str);
-    }*/
+    }*//*
+
 
 }
+*/

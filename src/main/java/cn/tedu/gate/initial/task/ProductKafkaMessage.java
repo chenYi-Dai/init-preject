@@ -1,3 +1,4 @@
+/*
 package cn.tedu.gate.initial.task;
 
 import com.alibaba.fastjson.JSONObject;
@@ -47,3 +48,4 @@ public class ProductKafkaMessage {
         return str;
     }
 }
+*/
