@@ -3,6 +3,7 @@ package cn.tedu.gate.initial;
 import cn.tedu.gate.initial.dto.BaseResp;
 import cn.tedu.gate.initial.service.PositionService;
 import com.alibaba.fastjson.JSONObject;
+import lombok.extern.slf4j.Slf4j;
 import org.activiti.engine.RepositoryService;
 import org.activiti.engine.repository.Deployment;
 import org.junit.jupiter.api.Test;
@@ -15,6 +16,7 @@ import java.io.InputStream;
 import java.util.List;
 import java.util.zip.ZipInputStream;
 
+@Slf4j
 @SpringBootTest(classes = InitialApplicationTest.class)
 public class DeploymentTest {
 
@@ -42,7 +44,7 @@ public class DeploymentTest {
     public void initD() {
         String ip = "113.90.80.151";
         BaseResp location = positionService.getLocation(ip);
-        System.out.println(JSONObject.toJSONString(location));
+        log.info("location | {}",JSONObject.toJSONString(location));
     }
 
     /**
