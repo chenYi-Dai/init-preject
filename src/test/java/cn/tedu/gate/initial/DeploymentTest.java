@@ -4,6 +4,8 @@ import cn.tedu.gate.initial.dto.BaseResp;
 import cn.tedu.gate.initial.service.PositionService;
 import com.alibaba.fastjson.JSONObject;
 import lombok.extern.slf4j.Slf4j;
+import org.activiti.engine.ProcessEngine;
+import org.activiti.engine.ProcessEngineConfiguration;
 import org.activiti.engine.RepositoryService;
 import org.activiti.engine.repository.Deployment;
 import org.junit.jupiter.api.Test;
@@ -88,4 +90,28 @@ public class DeploymentTest {
         String deploymentId = "4c97f9ce-4774-11ed-930a-e4a8dfd43d4a";
         this.repositoryService.deleteDeployment(deploymentId, false);
     }
+
+    //流程引擎
+    private ProcessEngine processEngine;
+
+    /**
+     * @Description: 数据库初始化
+     * @param:
+     * @return: void
+     */
+    @Test
+    public void testProcessEngineConfiguration() {
+
+        ProcessEngineConfiguration config = ProcessEngineConfiguration.createStandaloneProcessEngineConfiguration ();
+        config.setJdbcDriver ("com.mysql.jdbc.Driver");
+        config.setJdbcUrl("jdbc:mysql://9.134.94.134:3306/tx_activiti?characterEncoding=UTF-8&serverTimezone=UTC&nullCatalogMeansCurrent=true");
+        config.setJdbcUsername("root");
+        config.setJdbcPassword("ProjectFuture@2024");
+
+        //在构建过程引擎时，执行检查并在必要时执行模式的更新. 如果没有表则创建，
+        config.setDatabaseSchemaUpdate (ProcessEngineConfiguration.DB_SCHEMA_UPDATE_TRUE);
+
+        processEngine = config.buildProcessEngine ();
+    }
+
 }
