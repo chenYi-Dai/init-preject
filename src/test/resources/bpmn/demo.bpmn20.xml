@@ -10,7 +10,7 @@
     <sequenceFlow id="sid-5850a716-d3cf-4d2f-9e46-25a6d5ad3fdb" sourceRef="sid-5cac9e7f-9344-4f2e-b588-dbb1b9bc2469" targetRef="sid-5ed1a202-66fc-4489-86f9-2e6b134086f1"/>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_demo">
-    <bpmndi:BPMNPlane bpmnElement="demoID" id="BPMNPlane_demo">
+    <bpmndi:BPMNPlane bpmnElement="demo" id="BPMNPlane_demo">
       <bpmndi:BPMNShape id="shape-189b9cf5-8765-4477-8500-72538617e08a" bpmnElement="sid-7fa8dad6-7255-455a-a922-83c8f80339e9">
         <omgdc:Bounds x="-586.60364" y="-378.10004" width="30.0" height="30.0"/>
       </bpmndi:BPMNShape>

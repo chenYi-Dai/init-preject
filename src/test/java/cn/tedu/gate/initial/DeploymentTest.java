@@ -7,7 +7,12 @@ import lombok.extern.slf4j.Slf4j;
 import org.activiti.engine.ProcessEngine;
 import org.activiti.engine.ProcessEngineConfiguration;
 import org.activiti.engine.RepositoryService;
+import org.activiti.engine.RuntimeService;
 import org.activiti.engine.repository.Deployment;
+import org.activiti.engine.repository.ProcessDefinition;
+import org.activiti.engine.repository.ProcessDefinitionQuery;
+import org.activiti.engine.runtime.ProcessInstance;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -22,8 +27,8 @@ import java.util.zip.ZipInputStream;
 @SpringBootTest(classes = InitialApplicationTest.class)
 public class DeploymentTest {
 
-    @Autowired
-    private RepositoryService repositoryService;
+/*    @Autowired
+    private RepositoryService repositoryService;*/
 
     @Resource
     private PositionService positionService;
@@ -31,7 +36,7 @@ public class DeploymentTest {
 
     /**
      * 流程部署
-     */
+
     @Test
     public void initDeployment() {
         String fileName = "bpmn/Part1_Deployment.bpmn20.xml";
@@ -41,7 +46,7 @@ public class DeploymentTest {
                 .deploy();
         System.out.println("流程部署名称：" + deployment.getName());
     }
-
+     */
     @Test
     public void initD() {
         String ip = "113.90.80.151";
@@ -51,7 +56,7 @@ public class DeploymentTest {
 
     /**
      * 流程部署（Zip包）
-     */
+
     @Test
     public void initDeploymentByZip() {
         InputStream inputStream = this.getClass()
@@ -65,10 +70,10 @@ public class DeploymentTest {
                 .deploy();
         System.out.println("流部署名称：" + deployment.getName());
     }
-
+     */
     /**
      * 查询流程部署列表
-     */
+
     @Test
     public void listDeployments() {
         List<Deployment> deployments = this.repositoryService.createDeploymentQuery().list();
@@ -81,15 +86,15 @@ public class DeploymentTest {
             });
         }
     }
-
+     */
     /**
      * 删除对流程实例、历史流程实例和作业的给定部署和级联删除
-     */
+
     @Test
     public void deleteDeployment() {
         String deploymentId = "4c97f9ce-4774-11ed-930a-e4a8dfd43d4a";
         this.repositoryService.deleteDeployment(deploymentId, false);
-    }
+    }  */
 
     //流程引擎
     private ProcessEngine processEngine;
@@ -99,7 +104,7 @@ public class DeploymentTest {
      * @param:
      * @return: void
      */
-    @Test
+    @BeforeEach
     public void testProcessEngineConfiguration() {
 
         ProcessEngineConfiguration config = ProcessEngineConfiguration.createStandaloneProcessEngineConfiguration ();
@@ -112,6 +117,56 @@ public class DeploymentTest {
         config.setDatabaseSchemaUpdate (ProcessEngineConfiguration.DB_SCHEMA_UPDATE_TRUE);
 
         processEngine = config.buildProcessEngine ();
+    }
+
+    // 2501
+    @Test
+    public void testDeployment(){
+        Deployment deploy = processEngine.getRepositoryService().createDeployment()
+                .addClasspathResource("bpmn/test-demo.bpmn20.xml")
+                .name("流程部署测试")
+                .key("dem1o")
+                .tenantId("cy")
+                .category("test")
+                .deploy();
+        System.out.println(deploy.getId());
+    }
+
+    @Test
+    public void getTask() {
+        List<Deployment> list = processEngine.getRepositoryService().createDeploymentQuery().list();
+        list.forEach(deployment -> {
+            log.info("deployment id {}",deployment.getId());
+            log.info("deployment name {}",deployment.getName());
+            log.info("deployment time {}",deployment.getDeploymentTime());
+            log.info("deployment key {}",deployment.getKey());
+            log.info("deployment tenantId {}",deployment.getTenantId());
+        });
+    }
+
+
+    @Test
+    public void startProcessInstance() {
+
+        RepositoryService repositoryService1 = processEngine.getRepositoryService();
+
+        List<Deployment> list = processEngine.getRepositoryService().createDeploymentQuery().list();
+        RuntimeService runtimeService = processEngine.getRuntimeService();
+        list.forEach(deployment -> {
+            log.info("deployment key {}",deployment.getName());
+            long count = runtimeService.createProcessInstanceQuery().count();
+            log.info("count {}",count);
+            if(count == 0){
+                log.info("not start processInstance | {}",deployment.getKey());
+                ProcessDefinition definitionQuery = repositoryService1.createProcessDefinitionQuery()
+                        .deploymentId(deployment.getId()).singleResult();
+
+                ProcessInstance processInstance = runtimeService.startProcessInstanceByKeyAndTenantId(definitionQuery.getKey(),definitionQuery.getTenantId());
+                log.info("start processInstance | {}",processInstance.getId());
+            }
+        });
+
+
     }
 
 }
