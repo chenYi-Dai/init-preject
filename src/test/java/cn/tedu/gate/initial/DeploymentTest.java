@@ -4,14 +4,13 @@ import cn.tedu.gate.initial.dto.BaseResp;
 import cn.tedu.gate.initial.service.PositionService;
 import com.alibaba.fastjson.JSONObject;
 import lombok.extern.slf4j.Slf4j;
-import org.activiti.engine.ProcessEngine;
-import org.activiti.engine.ProcessEngineConfiguration;
-import org.activiti.engine.RepositoryService;
-import org.activiti.engine.RuntimeService;
+import org.activiti.engine.*;
 import org.activiti.engine.repository.Deployment;
 import org.activiti.engine.repository.ProcessDefinition;
 import org.activiti.engine.repository.ProcessDefinitionQuery;
 import org.activiti.engine.runtime.ProcessInstance;
+import org.activiti.engine.task.Task;
+import org.activiti.engine.task.TaskQuery;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +19,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.annotation.Resource;
 import java.io.InputStream;
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.zip.ZipInputStream;
 
@@ -132,9 +132,13 @@ public class DeploymentTest {
         System.out.println(deploy.getId());
     }
 
+    /**
+     * 使用 RepositoryService 查询已部署的流程
+     */
     @Test
-    public void getTask() {
+    public void getRepositoryDeployments() {
         List<Deployment> list = processEngine.getRepositoryService().createDeploymentQuery().list();
+        log.info("list size {}",list.size());
         list.forEach(deployment -> {
             log.info("deployment id {}",deployment.getId());
             log.info("deployment name {}",deployment.getName());
@@ -142,6 +146,43 @@ public class DeploymentTest {
             log.info("deployment key {}",deployment.getKey());
             log.info("deployment tenantId {}",deployment.getTenantId());
         });
+    }
+
+
+    /**
+     * 获取当前正在执行的task
+     */
+    @Test
+    public void getTask(){
+        TaskService taskService = processEngine.getTaskService();
+        List<Task> list = taskService.createTaskQuery().list();
+        for (Task task : list) {
+            log.info("task id {}",task.getId());
+            log.info("task name {}",task.getName());
+            log.info("task assignee {}",task.getAssignee());
+            System.out.println("Process Instance ID: " + task.getProcessInstanceId());
+        }
+        RuntimeService runtimeService = processEngine.getRuntimeService();
+        ProcessInstance processInstance = runtimeService.createProcessInstanceQuery().singleResult();
+        log.info("processInstance id {}",processInstance.getId());
+        log.info("processInstance businessKey {}",processInstance.getBusinessKey());
+        TaskQuery taskQuery = taskService.createTaskQuery().processInstanceId(processInstance.getId());
+        log.info("taskQuery count {}",taskQuery.count());
+        Task task = taskQuery.singleResult();
+        log.info("taskQuery name {}",task.getName());
+        log.info("task name {}",task.getId());
+        if(task.getName().equals("提交")){
+            taskService.complete(task.getId());
+        }
+
+        if(task.getName().equals("主管审批")){
+            taskService.complete(task.getId());
+        }
+    }
+
+    @Test
+    public void endProesccInstance(){
+        RepositoryService repositoryService1 = processEngine.getRepositoryService();
     }
 
 
