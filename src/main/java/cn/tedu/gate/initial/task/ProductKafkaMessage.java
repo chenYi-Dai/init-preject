@@ -15,7 +15,7 @@ import java.util.Properties;
 import java.util.Random;
 
 @Slf4j
-@Component
+//@Component
 public class ProductKafkaMessage {
 
     @Value("${spring.kafka.template.default-topic}")

@@ -49,3 +49,9 @@ spring:
   #      type: batch
 stop:
   case: false
+
+mysql:
+  url: jdbc:mysql://9.134.94.134:3306/um_mid2
+  name: root
+  pwd: ProjectFuture@2024
+  driver-class: com.mysql.cj.jdbc.Driver
