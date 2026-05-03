@@ -49,9 +49,11 @@ spring:
   #      type: batch
 stop:
   case: false
-
+dashscope:
+  api-key: sk-0bd4236fe8db4d5eb74ebf4eae645528
+  model-name: qwen-plus
 mysql:
-  url: jdbc:mysql://9.134.94.134:3306/um_mid2
+  url: jdbc:mysql://localhost:3306/sys
   name: root
-  pwd: ProjectFuture@2024
+  pwd: root
   driver-class: com.mysql.cj.jdbc.Driver
