@@ -2,11 +2,11 @@ package cn.tedu.gate.initial.config;
 
 import cn.tedu.gate.initial.service.BaseService;
 import cn.tedu.gate.initial.service.impl.TestService;
+import jakarta.annotation.Resource;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
 

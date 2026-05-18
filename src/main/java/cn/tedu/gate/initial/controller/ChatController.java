@@ -2,17 +2,15 @@ package cn.tedu.gate.initial.controller;
 
 import cn.tedu.gate.initial.entity.MessageRequest;
 import cn.tedu.gate.initial.service.impl.WeatherService;
-import io.swagger.annotations.Api;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import org.springframework.ai.chat.client.ChatClient;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/chat")
-@Api(tags = "通义千问接口")
 public class ChatController {
+
     private final ChatClient chatClient;
 
     public ChatController(ChatClient.Builder builder, WeatherService weatherService) {
@@ -25,6 +23,26 @@ public class ChatController {
     public String chat(@RequestBody MessageRequest request) {
         return chatClient.prompt()
                 .user(request.getMessage())
+                .call()
+                .content();
+    }
+
+    @GetMapping("/flow")
+    @Operation(summary = "普通聊天接口", description = "发送消息给通义千问并获取回复")
+    public String chat(@RequestParam(value = "message",defaultValue = "你给我讲一个笑话") String message) {
+        return chatClient.prompt()
+                .user(message)
+                .call()
+                .content();
+    }
+
+    @GetMapping("/ask")
+    @Operation(summary = "普通聊天接口", description = "发送消息给通义千问并获取回复")
+    public String ask(
+            @Parameter(description = "用户发送的消息", required = true, example = "你好")
+            @RequestParam String message) {
+        return chatClient.prompt()
+                .user(message)
                 .call()
                 .content();
     }

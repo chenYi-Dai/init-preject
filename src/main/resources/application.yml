@@ -1,6 +1,15 @@
 server:
   port: 9009
 spring:
+  ai:
+    dashscope:
+      api-key: sk-0bd4236fe8db4d5eb74ebf4eae645528
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/sys?useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Shanghai&useSSL=false
+    username: root
+    password: root
+    type: com.alibaba.druid.pool.DruidDataSource
   application:
     name: initial-project # 定义当前服务名称
 #  cloud:
@@ -47,13 +56,43 @@ spring:
     template:
       default-topic: test-topic-name
   #      type: batch
+
+
 stop:
   case: false
 dashscope:
   api-key: sk-0bd4236fe8db4d5eb74ebf4eae645528
   model-name: qwen-plus
+
 mysql:
   url: jdbc:mysql://localhost:3306/sys
   name: root
   pwd: root
   driver-class: com.mysql.cj.jdbc.Driver
+seata:
+  tx-service-group: default_tx_group # 定义当前微服务的事务分组名
+  service:
+    vgroup-mapping:
+      default_tx_group: default # 将 default_tx_group 映射到名为 'default' 的 TC 集群
+  registry:
+    type: file # 如果TC也是单机file模式，保持一致
+
+
+springdoc:
+  swagger-ui:
+    enabled: true # 必须改为true，开启Swagger UI
+    path: /swagger-ui.html
+  api-docs:
+    enabled: true # 必须改为true，开启API文档生成
+    path: /v3/api-docs
+
+knife4j:
+  enable: true
+  basic:
+    enable: true
+    username: admin
+    password: admin
+  setting:
+    language: zh_cn
+    enable-version: true
+    enable-footer: false
