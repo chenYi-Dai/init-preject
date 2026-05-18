@@ -5,13 +5,15 @@ import cn.tedu.gate.initial.service.impl.WeatherService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import org.springframework.ai.chat.client.ChatClient;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/chat")
 public class ChatController {
 
-    private final ChatClient chatClient;
+    @Autowired
+    private ChatClient chatClient;
 
     public ChatController(ChatClient.Builder builder, WeatherService weatherService) {
         this.chatClient = builder
